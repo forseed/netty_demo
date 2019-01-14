@@ -10,7 +10,9 @@
     - [ChatDemo](src/main/java/netty/chatdemo)
     - [HeartbeatDemo](src/main/java/netty/heartbeatdemo)
     - [WebSocketDemo](src/main/java/netty/websocketdemo)
-        - [Page](src/webapp/demo.html)
+        - [Browser](src/webapp/websocketdemo.html)
+    - [ProtoBufDemo](src/main/java/netty/protobufdemo)
+        - [ProtoBuf](src/protobuf)
  
  - [**Nio**](src/main/java/nio)
  
