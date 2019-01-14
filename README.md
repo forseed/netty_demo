@@ -15,3 +15,4 @@
  - [**Nio**](src/main/java/nio)
  
  - [**Socket**](src/main/java/socket)
+    - [Simple Demo](src/main/java/socket/demo)
