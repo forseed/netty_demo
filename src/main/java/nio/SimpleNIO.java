@@ -20,7 +20,35 @@ public class SimpleNIO {
 //        demo3();
 
         //4.文件复制
-        demo4();
+//        demo4();
+
+        //5.Slice Buffer
+        demo5();
+    }
+
+    private static void demo5() {
+        ByteBuffer buffer = ByteBuffer.allocate(10);
+
+        for (int i = 0; i < buffer.capacity(); ++i) {
+            buffer.put((byte) i);
+        }
+
+        buffer.position(2);
+        buffer.limit(6);
+
+        ByteBuffer sliceBuffer = buffer.slice();
+        for (int i = 0; i < sliceBuffer.capacity(); ++i) {
+            byte b = sliceBuffer.get(i);
+            b *= 2;
+            sliceBuffer.put(i, b);
+        }
+
+        buffer.position(0);
+        buffer.limit(buffer.capacity());
+
+        while (buffer.hasRemaining()) {
+            System.out.println(buffer.get());
+        }
     }
 
     private static void demo4() {
