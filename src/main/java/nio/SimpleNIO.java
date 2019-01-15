@@ -1,12 +1,16 @@
 package nio;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
+import java.net.InetSocketAddress;
+import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
+import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
+import java.nio.channels.ServerSocketChannel;
+import java.nio.channels.SocketChannel;
 import java.security.SecureRandom;
+import java.util.Arrays;
 
 public class SimpleNIO {
     public static void main(String[] args) {
@@ -23,7 +27,72 @@ public class SimpleNIO {
 //        demo4();
 
         //5.Slice Buffer
-        demo5();
+//        demo5();
+
+        //6.MappedByteBuffer
+        demo6();
+
+        //7.gathering scattering
+        demo7();
+    }
+
+    private static void demo7() {
+        try (ServerSocketChannel serverSocketChannel = ServerSocketChannel.open()) {
+            serverSocketChannel.bind(new InetSocketAddress("127.0.0.1", 8899));
+
+            int messageLength = 2 + 3 + 4;
+
+            ByteBuffer[] buffers = new ByteBuffer[3];
+
+            buffers[0] = ByteBuffer.allocate(2);
+            buffers[1] = ByteBuffer.allocate(3);
+            buffers[2] = ByteBuffer.allocate(4);
+
+            SocketChannel socketChannel = serverSocketChannel.accept();
+
+            while (true) {
+
+                int bytesRead = 0;
+                for (long r = socketChannel.read(buffers); bytesRead < messageLength; r = socketChannel.read(buffers)) {
+                    bytesRead += r;
+                    System.out.println("bytesRead:" + bytesRead);
+                }
+
+                Arrays.stream(buffers).map(buffer -> "position: " + buffer.position() + ", limit: " + buffer.limit()).
+                        forEach(System.out::println);
+
+                //读取客户端数据后再写回客户端
+                Arrays.asList(buffers).forEach(Buffer::flip);
+
+                int bytesWrite = 0;
+                for (long w = socketChannel.write(buffers); bytesWrite < messageLength; w = socketChannel.write(buffers)) {
+                    bytesWrite += w;
+                }
+
+                Arrays.asList(buffers).forEach(Buffer::clear);
+
+                System.out.println("bytesRead: " + bytesRead + ", bytesWritten: " + bytesWrite + ", messageLength: " + messageLength);
+            }
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void demo6() {
+        try (RandomAccessFile randomAccessFile = new RandomAccessFile("src/resources/file/input.txt", "rw")) {
+            FileChannel fileChannel = randomAccessFile.getChannel();
+
+            MappedByteBuffer mappedByteBuffer = fileChannel.map(FileChannel.MapMode.READ_WRITE, 0, 5);
+
+            mappedByteBuffer.put(0, (byte) 'a');
+            mappedByteBuffer.put(3, (byte) 'b');
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
     private static void demo5() {
