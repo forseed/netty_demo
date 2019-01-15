@@ -30,7 +30,7 @@ public class SimpleNIO {
 //        demo5();
 
         //6.MappedByteBuffer
-        demo6();
+//        demo6();
 
         //7.gathering scattering
         demo7();
