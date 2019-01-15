@@ -10,11 +10,16 @@
     - [ChatDemo](src/main/java/netty/chatdemo)
     - [HeartbeatDemo](src/main/java/netty/heartbeatdemo)
     - [WebSocketDemo](src/main/java/netty/websocketdemo)
-        - [Browser](src/webapp/websocketdemo.html)
+        - [Browser](src/resources/html/websocketdemo.html)
     - [ProtoBufDemo](src/main/java/netty/protobufdemo)
-        - [ProtoBuf](src/protobuf)
+        - [ProtoBuf](src/resources/protobuf/Person.proto)
+        
+ - [**IO**](src/main/java/io)
+    - [Simple IO](src/main/java/io/SimpleIO.java)
+    - [装饰者模式](src/main/java/io/decorator)
  
  - [**Nio**](src/main/java/nio)
+    - [Simple Nio](src/main/java/nio/SimpleNIO.java)
  
  - [**Socket**](src/main/java/socket)
     - [Simple Demo](src/main/java/socket/demo)
