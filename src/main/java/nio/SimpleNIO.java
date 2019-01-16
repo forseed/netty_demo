@@ -6,14 +6,14 @@ import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 import java.nio.MappedByteBuffer;
-import java.nio.channels.FileChannel;
-import java.nio.channels.ServerSocketChannel;
-import java.nio.channels.SocketChannel;
+import java.nio.channels.*;
 import java.security.SecureRandom;
 import java.util.Arrays;
+import java.util.Iterator;
+import java.util.Set;
 
 public class SimpleNIO {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         //1.base demo
 //        demo1();
 
@@ -33,7 +33,67 @@ public class SimpleNIO {
 //        demo6();
 
         //7.gathering scattering
-        demo7();
+//        demo7();
+
+        //8.Selector
+        demo8();
+    }
+
+    private static void demo8() throws IOException {
+        int[] ports = new int[5];
+
+        ports[0] = 5000;
+        ports[1] = 5001;
+        ports[2] = 5002;
+        ports[3] = 5003;
+        ports[4] = 5004;
+
+        Selector selector = Selector.open();
+
+        for (int i = 0; i < ports.length; i++) {
+            ServerSocketChannel serverSocketChannel = ServerSocketChannel.open();
+            serverSocketChannel.configureBlocking(false);
+            serverSocketChannel.bind(new InetSocketAddress(ports[i]));
+
+            serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);
+            System.out.println("监听端口： " + ports[i]);
+        }
+
+        while (true) {
+            selector.select();
+
+            Set<SelectionKey> selectionKeys = selector.selectedKeys();
+            Iterator<SelectionKey> iterator = selectionKeys.iterator();
+            while (iterator.hasNext()) {
+                SelectionKey selectionKey = iterator.next();
+
+                if (selectionKey.isAcceptable()) {
+                    ServerSocketChannel serverSocketChannel = (ServerSocketChannel) selectionKey.channel();
+                    SocketChannel socketChannel = serverSocketChannel.accept();
+                    socketChannel.configureBlocking(false);
+
+                    socketChannel.register(selector, SelectionKey.OP_READ);
+
+                    iterator.remove();
+                    System.out.println("获得客户端连接： " + socketChannel);
+
+                } else if (selectionKey.isReadable()) {
+                    SocketChannel socketChannel = (SocketChannel) selectionKey.channel();
+                    ByteBuffer buffer = ByteBuffer.allocate(1024);
+                    int bytesRead = 0;
+                    for (int read = socketChannel.read(buffer); read > 0; read = socketChannel.read(buffer)) {
+                        System.out.println("read:" + read);
+                        bytesRead += read;
+                        buffer.flip();
+                        socketChannel.write(buffer);
+                        buffer.clear();
+                    }
+                    iterator.remove();
+                    System.out.println("读取： " + bytesRead + "，来自于： " + socketChannel);
+                }
+            }
+
+        }
     }
 
     private static void demo7() {
@@ -127,8 +187,9 @@ public class SimpleNIO {
             FileChannel inputChannel = inputStream.getChannel();
             FileChannel outputChannel = outputStream.getChannel();
 
-            ByteBuffer buffer = ByteBuffer.allocate(1);
+            ByteBuffer buffer = ByteBuffer.allocate(1024);
             for (int len = inputChannel.read(buffer); len != -1; len = inputChannel.read(buffer)) {
+                System.out.println(len);
                 buffer.flip();
                 outputChannel.write(buffer);
                 buffer.clear();
