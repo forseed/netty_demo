@@ -20,6 +20,7 @@
  
  - [**Nio**](src/main/java/nio)
     - [Simple Nio](src/main/java/nio/SimpleNIO.java)
+    - [ChatDemo](src/main/java/nio/chatdemo)
  
  - [**Socket**](src/main/java/socket)
     - [Simple Demo](src/main/java/socket/demo)
