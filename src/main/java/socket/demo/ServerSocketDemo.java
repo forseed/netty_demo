@@ -9,19 +9,11 @@ import java.util.concurrent.Executors;
 /**
  * 多线程下ServerSocket
  */
-public class ServerSocketDemo implements Runnable {
-    private final String name;
-    private final int port;
+public class ServerSocketDemo {
 
-    public ServerSocketDemo(String name, int port) {
-        this.name = name;
-        this.port = port;
-    }
-
-    @Override
-    public void run() {
+    public static void main(String[] args) {
         ExecutorService executorService = Executors.newFixedThreadPool(5);
-        try (ServerSocket serverSocket = new ServerSocket(port)) {
+        try (ServerSocket serverSocket = new ServerSocket(8899)) {
             while (true) {
                 Socket socket = serverSocket.accept();
                 System.out.println(socket.getInetAddress().getHostAddress() + " is connecting");

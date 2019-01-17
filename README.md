@@ -21,6 +21,7 @@
  - [**Nio**](src/main/java/nio)
     - [Simple Nio](src/main/java/nio/SimpleNIO.java)
     - [ChatDemo](src/main/java/nio/chatdemo)
+    - [类似Socket Demo,用Channel和ByteBuffer实现](src/main/java/nio/transferdemo)
  
  - [**Socket**](src/main/java/socket)
     - [Simple Demo](src/main/java/socket/demo)

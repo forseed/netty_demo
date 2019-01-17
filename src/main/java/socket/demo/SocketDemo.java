@@ -6,19 +6,12 @@ import java.net.Socket;
 /**
  * Socket
  */
-public class SocketDemo implements Runnable {
+public class SocketDemo {
 
-    private final String name;
-
-    public SocketDemo(String name) {
-        this.name = name;
-    }
-
-    @Override
-    public void run() {
+    public static void main(String[] args) {
         Socket socket = null;
         try {
-            socket = new Socket("127.0.0.1", 9999);
+            socket = new Socket("127.0.0.1", 8899);
             socket.setSoTimeout(5000);
             BufferedWriter clientWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
             BufferedReader serverReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
