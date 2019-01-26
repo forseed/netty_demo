@@ -13,6 +13,7 @@
         - [Browser](src/resources/html/websocketdemo.html)
     - [ProtoBufDemo](src/main/java/netty/protobufdemo)
         - [ProtoBuf](src/resources/protobuf/Person.proto)
+    - [EchoDemo](src/main/java/netty/echodemo)    
         
  - [**IO**](src/main/java/io)
     - [Simple IO](src/main/java/io/SimpleIO.java)
