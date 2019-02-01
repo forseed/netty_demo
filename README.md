@@ -19,7 +19,7 @@
         - [PlainNioServer](src/main/java/netty/transferdemo/PlainNioServer.java)
         - [NettyOioServer](src/main/java/netty/transferdemo/NettyOioServer.java)
         - [NettyNioServer](src/main/java/netty/transferdemo/NettyNioServer.java)
-        
+    - [CodecDemo](src/main/java/netty/codecdemo)      
  - [**IO**](src/main/java/io)
     - [Simple IO](src/main/java/io/SimpleIO.java)
     - [装饰者模式](src/main/java/io/decorator)
